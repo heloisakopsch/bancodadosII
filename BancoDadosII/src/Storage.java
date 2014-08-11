@@ -37,9 +37,9 @@ public class Storage {
 
     private void ListaPages()
     {
-    	for (Dados item : Memoria) {
-			System.out.println(item.Dados);
-			System.out.println(item.Page);
+    	for (String item : Memoria) {
+			System.out.println(item);
+			System.out.println(Memoria.indexOf(item));
 		}    	
     }
     /* lista as páginas na memória, 
