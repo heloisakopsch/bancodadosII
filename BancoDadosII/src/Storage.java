@@ -2,6 +2,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -17,7 +19,7 @@ public class Storage {
 		Disco = new HashMap<Integer, String>();
 		Mru = new LinkedList<String>();
 		Lru = new LinkedList<String>();
-		
+
 		Memoria = new HashMap<Integer, Frame>();
 		for (int i = 0; i < 10; i++) {
 			Frame frame = new Frame();
@@ -28,11 +30,13 @@ public class Storage {
 		}
 
 		BancoDados = new HashMap<Integer, Frame>();
-		File file = new File("C:\\Users\\heloisa.kopsch\\git\\bancodadosII\\BancoDadosII\\src\\BDfixo.txt");
 		BufferedReader reader = null;
 
+		InputStream input = this.getClass().getResourceAsStream("BDfixo.txt");
+		InputStreamReader isr = new InputStreamReader(input);
+
 		try {
-			reader = new BufferedReader(new FileReader(file));
+			reader = new BufferedReader(isr);
 			String text = null;
 
 			int page = 0;
@@ -73,50 +77,48 @@ public class Storage {
 					break;
 				}
 			}
-		}
-		else
-		{
+		} else {
 			for (Frame frame : Memoria.values()) {
 				if (frame == dado) {
 					if (frame.PinCount == 0) {
 						if (frame.mru) {
 							Mru.remove(frame.Dados);
-						}
-						else
-						{
+						} else {
 							Lru.remove(frame.Dados);
-						}					
-					
+						}
+
 						frame.PinCount++;
 					}
-					
+
 				}
 			}
-			
-			
+
 		}
 
 	}
+
 	/* carrega pagina na memória */
 
 	private void SavePage(int page, String dados) {
 		Disco.put(page, dados);
 	}
+
 	/* salva página no disco */
 
 	private void ChangePage(Frame frame) {
 		frame.Dirt = 1;
 	}
+
 	/* altera a bloco.. marca sujo */
 
 	public void ListaPages() {
 		for (Frame item : Memoria.values()) {
 			if (item.Dados != null) {
 				System.out.println("Página: " + item.Page);
-				System.out.println("Dirt: " +item.Dirt);
-				System.out.println("PinCount: " +item.PinCount);
-				System.out.println("Dados: " +item.Dados);
-			}		
+				System.out.println("Dirt: " + item.Dirt);
+				System.out.println("PinCount: " + item.PinCount);
+				System.out.println("Dados: " + item.Dados);
+			}
 		}
 	}
 	/*
